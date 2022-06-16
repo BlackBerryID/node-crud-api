@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "target": "ES6",
+    "allowJs": true,
+    "moduleResolution": "Node"
+  },
+  "include": ["src/**/*", "server.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
