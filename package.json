@@ -6,6 +6,7 @@
   "scripts": {
     "start:dev": "nodemon -w src src/server.ts",
     "start:prod": "tsc && node dist/server.js",
+    "start:multi": "nodemon -w src src/multi-server.ts",
     "test": "jest --detectOpenHandles"
   },
   "repository": {
