@@ -1,8 +1,14 @@
-import * as http from 'http';
+import http from 'http';
 import 'dotenv/config';
 
+import { getUsers } from './controllers/userController';
+
 const server = http.createServer((req, res) => {
-  console.log('WORKS');
+  if (req.url === '/users') {
+    getUsers(req, res);
+  } else {
+    console.log('default');
+  }
 });
 
 const PORT = process.env.PORT || 5000;
