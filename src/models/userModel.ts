@@ -51,3 +51,11 @@ export const update = (id: string, updateInfo: User) => {
     resolve(updatedUser);
   });
 };
+
+export const remove = (id: string) => {
+  return new Promise<void>((resolve, reject) => {
+    const index = db.findIndex((user) => user.id === id);
+    db.splice(index, 1);
+    resolve();
+  });
+};

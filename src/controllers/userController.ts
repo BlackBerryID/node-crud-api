@@ -130,3 +130,29 @@ export const updateUser = async (
     handleServerError(res);
   }
 };
+
+export const deleteUser = async (
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  id: string
+) => {
+  try {
+    if (!uuidValidateV4(id)) {
+      res.writeHead(400, { 'Content-type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Invalid user ID.' }));
+    }
+
+    const user = await UserModel.getById(id);
+
+    if (user === undefined) {
+      res.writeHead(404, { 'Content-type': 'application/json' });
+      res.end(JSON.stringify({ message: 'User with this ID does not exist.' }));
+    } else {
+      await UserModel.remove(id);
+      res.writeHead(204, { 'Content-type': 'application/json' });
+      res.end();
+    }
+  } catch (err) {
+    handleServerError(res);
+  }
+};
