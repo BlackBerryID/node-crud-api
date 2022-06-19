@@ -17,6 +17,13 @@ export const getAll = () => {
   });
 };
 
+export const getById = (id: string) => {
+  return new Promise((resolve, reject) => {
+    const result = db.find((user) => user.id === id);
+    resolve(result);
+  });
+};
+
 export const create = (user: User) => {
   return new Promise((resolve, reject) => {
     const newUser = { id: uuidv4(), ...user };

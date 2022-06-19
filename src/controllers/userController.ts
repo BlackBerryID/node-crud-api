@@ -1,7 +1,7 @@
 import http from 'http';
 
 import * as UserModel from '../models/userModel';
-import { handleServerError } from '../utils';
+import { handleServerError, uuidValidateV4 } from '../utils';
 
 import type { User } from '../typings';
 
@@ -10,6 +10,27 @@ export const getUsers = async (req: http.IncomingMessage, res: http.ServerRespon
     const users = await UserModel.getAll();
     res.writeHead(200, { 'Content-type': 'application/json' });
     res.end(JSON.stringify(users));
+  } catch (err) {
+    handleServerError(res);
+  }
+};
+
+export const getUser = async (req: http.IncomingMessage, res: http.ServerResponse, id: string) => {
+  try {
+    if (!uuidValidateV4(id)) {
+      res.writeHead(400, { 'Content-type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Invalid user ID.' }));
+    }
+
+    const user = await UserModel.getById(id);
+
+    if (user === undefined) {
+      res.writeHead(404, { 'Content-type': 'application/json' });
+      res.end(JSON.stringify({ message: 'User with this ID does not exist.' }));
+    } else {
+      res.writeHead(200, { 'Content-type': 'application/json' });
+      res.end(JSON.stringify(user));
+    }
   } catch (err) {
     handleServerError(res);
   }

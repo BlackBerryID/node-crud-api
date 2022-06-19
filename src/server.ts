@@ -1,12 +1,15 @@
 import http from 'http';
 import 'dotenv/config';
 
-import { getUsers, createUser } from './controllers/userController';
+import { getUsers, createUser, getUser } from './controllers/userController';
 
 const server = http.createServer((req, res) => {
-  if (req.url === '/users' && req.method === 'GET') {
+  if (req.url === '/api/users' && req.method === 'GET') {
     getUsers(req, res);
-  } else if (req.url === '/users' && req.method === 'POST') {
+  } else if (req.url.match(/\/api\/users\/\w+/) && req.method === 'GET') {
+    const id = req.url.split('/')[3];
+    getUser(req, res, id);
+  } else if (req.url === '/api/users' && req.method === 'POST') {
     createUser(req, res);
   } else {
     res.writeHead(404, { 'Content-type': 'application/json' });
