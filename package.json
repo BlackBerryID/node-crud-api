@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon -w src src/server.ts",
-    "start:prod": "tsc && node dist/server.js"
+    "start:prod": "tsc && node dist/server.js",
+    "test": "jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -18,13 +19,18 @@
   },
   "homepage": "https://github.com/BlackBerryID/node-crud-api#readme",
   "devDependencies": {
+    "@types/jest": "^28.1.2",
+    "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "dotenv": "^16.0.1",
     "eslint": "^8.17.0",
+    "jest": "^28.1.1",
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
+    "supertest": "^6.2.3",
+    "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
