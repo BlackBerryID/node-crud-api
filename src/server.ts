@@ -1,11 +1,13 @@
 import http from 'http';
 import 'dotenv/config';
 
-import { getUsers } from './controllers/userController';
+import { getUsers, createUser } from './controllers/userController';
 
 const server = http.createServer((req, res) => {
-  if (req.url === '/users') {
+  if (req.url === '/users' && req.method === 'GET') {
     getUsers(req, res);
+  } else if (req.url === '/users' && req.method === 'POST') {
+    createUser(req, res);
   } else {
     res.writeHead(404, { 'Content-type': 'application/json' });
     res.end(JSON.stringify({ message: 'Route not found' }));

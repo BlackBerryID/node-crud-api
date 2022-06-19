@@ -1,9 +1,6 @@
-type User = {
-  id?: string;
-  username: string;
-  age: number;
-  hobbies: string[];
-};
+import { v4 as uuidv4 } from 'uuid';
+
+import type { User } from '../typings';
 
 const db: User[] = [
   {
@@ -17,5 +14,13 @@ const db: User[] = [
 export const getAll = () => {
   return new Promise((resolve, reject) => {
     resolve(db);
+  });
+};
+
+export const create = (user: User) => {
+  return new Promise((resolve, reject) => {
+    const newUser = { id: uuidv4(), ...user };
+    db.push(newUser);
+    resolve(newUser);
   });
 };
