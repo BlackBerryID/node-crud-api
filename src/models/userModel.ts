@@ -2,14 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { User } from '../typings';
 
-let db: User[] = [
-  {
-    id: '111',
-    age: 33,
-    hobbies: [],
-    username: 'Dima',
-  },
-];
+let db: User[] = [];
 
 export const getAll = () => {
   return new Promise((resolve, reject) => {

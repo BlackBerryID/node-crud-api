@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/server.ts"
+    "start:dev": "nodemon -w src src/server.ts",
+    "start:prod": "tsc && node dist/server.js"
   },
   "repository": {
     "type": "git",
