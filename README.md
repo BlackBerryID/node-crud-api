@@ -1,3 +1,3 @@
 # node-crud-api
 
-Readme с описанием находиться в develop ветке: https://github.com/BlackBerryID/node-crud-api/tree/develop
+Readme с описанием находится в develop ветке: https://github.com/BlackBerryID/node-crud-api/tree/develop
