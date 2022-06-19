@@ -3,6 +3,7 @@ import { version as uuidVersion } from 'uuid';
 import { validate as uuidValidate } from 'uuid';
 
 export const handleServerError = (res: http.ServerResponse) => {
+  console.log('handleServerError');
   res.writeHead(500, { 'Content-type': 'application/json' });
   res.end(JSON.stringify({ message: 'Internal Server Error' }));
 };

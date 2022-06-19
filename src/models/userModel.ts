@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { User } from '../typings';
 
-const db: User[] = [
+let db: User[] = [
   {
     id: '111',
     age: 33,
@@ -29,5 +29,25 @@ export const create = (user: User) => {
     const newUser = { id: uuidv4(), ...user };
     db.push(newUser);
     resolve(newUser);
+  });
+};
+
+export const update = (id: string, updateInfo: User) => {
+  return new Promise((resolve, reject) => {
+    let updatedUser: null | User = null;
+
+    db = db.map((user) => {
+      if (user.id === id) {
+        updatedUser = {
+          ...user,
+          ...updateInfo,
+        };
+        return updatedUser;
+      } else {
+        return user;
+      }
+    });
+
+    resolve(updatedUser);
   });
 };
