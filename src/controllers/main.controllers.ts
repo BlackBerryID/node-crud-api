@@ -6,9 +6,7 @@ import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
 export const mainController = (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
   let responseStatusCode: number = 500;
-  let response: IUser[] | IUser | IErrorResponseBody = {
-    message: 'Error on the server',
-  };
+  let response: IUser[] | IUser | IErrorResponseBody | undefined;
 
   // GET
   if (req.method === 'GET' && req.url === '/api/users') {
@@ -104,7 +102,6 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
             }
           });
 
-          delete updatedData.id;
           response = updatedData as IUser;
           sendResponse(res, responseStatusCode, response);
         });
@@ -116,6 +113,31 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
         sendResponse(res, responseStatusCode, response);
       }
     }
+    // DELETE
+  } else if (req.method === 'DELETE') {
+    const userId = req.url?.split('/').at(-1) as string;
+    if (!uuidValidate(userId)) {
+      responseStatusCode = 400;
+      response = {
+        message: 'User id is not valid',
+      };
+    } else {
+      const index = db.findIndex((item) => {
+        return item.id === userId;
+      });
+
+      if (index !== -1) {
+        responseStatusCode = 204;
+        db.splice(index, 1);
+      } else {
+        responseStatusCode = 404;
+        response = {
+          message: 'User with this id is not found',
+        };
+      }
+    }
+
+    sendResponse(res, responseStatusCode, response);
   }
 
   console.log('req.url: ', req.url, req.method);

@@ -8,8 +8,13 @@ export interface IErrorResponseBody {
 export const sendResponse = (
   res: ServerResponse<IncomingMessage>,
   responseStatusCode: number,
-  response: IUser[] | IUser | IErrorResponseBody,
+  response: IUser[] | IUser | IErrorResponseBody | undefined,
 ) => {
   res.writeHead(responseStatusCode, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(response));
+
+  if (response) {
+    res.end(JSON.stringify(response));
+  } else {
+    res.end();
+  }
 };
