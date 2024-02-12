@@ -39,10 +39,9 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
     }
 
     sendResponse(res, responseStatusCode, response);
-  }
 
-  // POST
-  if (req.method === 'POST' && req.url === '/api/users') {
+    // POST
+  } else if (req.method === 'POST' && req.url === '/api/users') {
     let data = '';
     responseStatusCode = 200;
 
@@ -67,7 +66,56 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
       }
 
       sendResponse(res, responseStatusCode, response);
+
+      // PUT
     });
+  } else if (req.method === 'PUT') {
+    const userId = req.url?.split('/').at(-1) as string;
+    if (!uuidValidate(userId)) {
+      responseStatusCode = 400;
+      response = {
+        message: 'User id is not valid',
+      };
+      sendResponse(res, responseStatusCode, response);
+    } else {
+      const data = db.find((item) => {
+        return item.id === userId;
+      });
+
+      if (data) {
+        let dataFromReq = '';
+        responseStatusCode = 200;
+
+        req.on('data', (chunk) => {
+          dataFromReq += chunk;
+        });
+        req.on('end', () => {
+          let updatedData = {} as any;
+          const parsedData = JSON.parse(dataFromReq);
+
+          db.map((item, index) => {
+            if (item.id === userId) {
+              updatedData = {
+                ...item,
+                ...parsedData,
+              };
+
+              db[index] = updatedData as IUser;
+            }
+          });
+
+          delete updatedData.id;
+          response = updatedData as IUser;
+          sendResponse(res, responseStatusCode, response);
+        });
+      } else {
+        responseStatusCode = 404;
+        response = {
+          message: 'User with this id is not found',
+        };
+        sendResponse(res, responseStatusCode, response);
+      }
+    }
   }
 
   console.log('req.url: ', req.url, req.method);
