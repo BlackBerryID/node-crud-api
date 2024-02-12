@@ -5,7 +5,8 @@
   "scripts": {
     "start:dev": "ts-node-dev src/app.ts",
     "start:prod": "tsc && ts-node dist/app.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "start:multi": "ts-node-dev src/multi-server.ts"
   },
   "author": "",
   "license": "ISC",

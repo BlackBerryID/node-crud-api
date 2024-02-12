@@ -1,11 +1,16 @@
 import http from 'http';
 import 'dotenv/config';
 
-export const bootstrapServer = () => {
+export const bootstrapServer = (plusToPORT?: number) => {
   const server = http.createServer();
-  server.listen(process.env.PORT);
+  let port = Number(process.env.PORT) || 3000;
+  if (plusToPORT) {
+    port += plusToPORT;
+  }
 
-  console.log(`Server is running on port ${process.env.PORT}`);
+  server.listen(port);
+
+  console.log(`Server is running on port ${port}`);
 
   return server;
 };
