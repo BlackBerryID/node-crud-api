@@ -2,9 +2,9 @@
   "name": "crud-api",
   "version": "1.0.0",
   "description": "Readme с описанием находится в develop ветке: https://github.com/BlackBerryID/node-crud-api/tree/develop",
-  "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev src/server.ts"
+    "dev": "ts-node-dev src/app.ts",
+    "start": "ts-node src/app.ts"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "dotenv": "^16.4.2"
+    "dotenv": "^16.4.2",
+    "uuid": "^9.0.1"
   }
 }
