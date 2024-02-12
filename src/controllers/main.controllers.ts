@@ -7,13 +7,14 @@ import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 export const mainController = (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
   let responseStatusCode: number = 500;
   let response: IUser[] | IUser | IErrorResponseBody | undefined;
+  const isCorrectEndpoint = '/' + req.url?.split('/').slice(1, 3).join('/') === '/api/users';
 
   // GET
   if (req.method === 'GET' && req.url === '/api/users') {
     responseStatusCode = 200;
     response = db;
     sendResponse(res, responseStatusCode, response);
-  } else if (req.method === 'GET') {
+  } else if (req.method === 'GET' && isCorrectEndpoint) {
     const userId = req.url?.split('/').at(-1) as string;
     if (!uuidValidate(userId)) {
       responseStatusCode = 400;
@@ -67,7 +68,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
 
       // PUT
     });
-  } else if (req.method === 'PUT') {
+  } else if (req.method === 'PUT' && isCorrectEndpoint) {
     const userId = req.url?.split('/').at(-1) as string;
     if (!uuidValidate(userId)) {
       responseStatusCode = 400;
@@ -114,7 +115,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
       }
     }
     // DELETE
-  } else if (req.method === 'DELETE') {
+  } else if (req.method === 'DELETE' && isCorrectEndpoint) {
     const userId = req.url?.split('/').at(-1) as string;
     if (!uuidValidate(userId)) {
       responseStatusCode = 400;
@@ -138,7 +139,11 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
     }
 
     sendResponse(res, responseStatusCode, response);
+  } else {
+    responseStatusCode = 404;
+    response = {
+      message: 'This url does not exist',
+    };
+    sendResponse(res, responseStatusCode, response);
   }
-
-  console.log('req.url: ', req.url, req.method);
 };
