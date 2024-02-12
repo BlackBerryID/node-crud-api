@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Readme с описанием находится в develop ветке: https://github.com/BlackBerryID/node-crud-api/tree/develop",
   "scripts": {
-    "dev": "ts-node-dev src/app.ts",
-    "start": "ts-node src/app.ts"
+    "start:dev": "ts-node-dev src/app.ts",
+    "start:prod": "tsc && ts-node dist/app.js"
   },
   "author": "",
   "license": "ISC",
