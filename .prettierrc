@@ -1,0 +1,17 @@
+{
+  "printWidth": 100,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "endOfLine": "auto",
+  "semi": true,
+  "parser": "typescript",
+  "overrides": [
+    {
+      "files": ["*.json", ".*rc"],
+      "options": {
+        "parser": "json",
+        "singleQuote": false
+      }
+    }
+  ]
+}
