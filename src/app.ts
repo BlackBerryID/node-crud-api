@@ -13,3 +13,5 @@ server.on('request', (req, res) => {
     });
   }
 });
+
+export { server };

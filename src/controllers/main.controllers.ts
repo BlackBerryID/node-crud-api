@@ -19,7 +19,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
     if (!uuidValidate(userId)) {
       responseStatusCode = 400;
       response = {
-        message: 'User id is not valid',
+        message: 'Invalid user ID.',
       };
     } else {
       const data = db.find((item) => {
@@ -32,7 +32,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
       } else {
         responseStatusCode = 404;
         response = {
-          message: 'User with this id is not found',
+          message: 'User with this ID does not exist.',
         };
       }
     }
@@ -51,16 +51,17 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
       const parsedData = JSON.parse(data);
 
       if (isCorrectUserObject(parsedData)) {
-        db.push({
+        const newUserObject = {
           id: uuidv4(),
           ...parsedData,
-        });
+        };
+        db.push(newUserObject);
         responseStatusCode = 201;
-        response = parsedData as IUser;
+        response = newUserObject as IUser;
       } else {
         responseStatusCode = 400;
         response = {
-          message: "User object hasn't contained all required fields",
+          message: "The new user's object must contain the name, age and hobbies.",
         };
       }
 
@@ -73,7 +74,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
     if (!uuidValidate(userId)) {
       responseStatusCode = 400;
       response = {
-        message: 'User id is not valid',
+        message: 'Invalid user ID.',
       };
       sendResponse(res, responseStatusCode, response);
     } else {
@@ -92,24 +93,32 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
           let updatedData = {} as any;
           const parsedData = JSON.parse(dataFromReq);
 
-          db.map((item, index) => {
-            if (item.id === userId) {
-              updatedData = {
-                ...item,
-                ...parsedData,
-              };
+          if (!isCorrectUserObject(parsedData)) {
+            responseStatusCode = 400;
+            response = {
+              message: "The user's object with new data must contain the name, age and hobbies.",
+            };
+          } else {
+            db.map((item, index) => {
+              if (item.id === userId) {
+                updatedData = {
+                  ...item,
+                  ...parsedData,
+                };
 
-              db[index] = updatedData as IUser;
-            }
-          });
+                db[index] = updatedData as IUser;
+              }
+            });
 
-          response = updatedData as IUser;
+            response = updatedData as IUser;
+          }
+
           sendResponse(res, responseStatusCode, response);
         });
       } else {
         responseStatusCode = 404;
         response = {
-          message: 'User with this id is not found',
+          message: 'User with this ID does not exist.',
         };
         sendResponse(res, responseStatusCode, response);
       }
@@ -120,7 +129,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
     if (!uuidValidate(userId)) {
       responseStatusCode = 400;
       response = {
-        message: 'User id is not valid',
+        message: 'Invalid user ID.',
       };
     } else {
       const index = db.findIndex((item) => {
@@ -133,7 +142,7 @@ export const mainController = (req: IncomingMessage, res: ServerResponse<Incomin
       } else {
         responseStatusCode = 404;
         response = {
-          message: 'User with this id is not found',
+          message: 'User with this ID does not exist.',
         };
       }
     }
